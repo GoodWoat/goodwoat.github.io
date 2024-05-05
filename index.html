@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Word to List</title>
+</head>
+<body>
+
+<script>
+var listCounter = 0; // Start counter from 0
+
+function addWordToList(buttonName) {
+  var listName = document.getElementById("listName" + listCounter).textContent;
+  var list = document.getElementById("wordList" + listCounter);
+  var existingRow = null;
+  
+  // Check if the button already exists in the table
+  var rows = list.getElementsByTagName("tr");
+  for (var i = 0; i < rows.length; i++) {
+    if (rows[i].cells[0].textContent === buttonName) {
+      existingRow = rows[i];
+      break;
+    }
+  }
+  
+  if (existingRow) {
+    // If the button already exists, increment the count
+    var count = parseInt(existingRow.cells[1].textContent || 1);
+    count++;
+    existingRow.cells[1].textContent = count;
+  } else {
+    // If the button doesn't exist, add it to the table
+    var row = list.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    cell1.textContent = buttonName;
+    cell2.textContent = 1;
+  }
+}
+</script>
+
+<script>
+function createList() {
+  var listNumber = prompt("Please enter a number to name the list:");
+  if (listNumber) {
+    listCounter++; // Increment counter regardless of whether the button is pressed again
+    
+    var listName = "Tisch Nr. " + listNumber;
+    
+    var newListName = document.createElement("h2");
+    newListName.textContent = listName;
+    newListName.id = "listName" + listCounter;
+    
+    var newWordList = document.createElement("table");
+    newWordList.id = "wordList" + listCounter;
+    
+    var header = newWordList.createTHead();
+    var row = header.insertRow(0);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    cell1.textContent = "Produkt";
+    cell2.textContent = "Stk.";
+    
+    var container = document.getElementById("container");
+    container.appendChild(newListName);
+    container.appendChild(newWordList);
+    
+    document.getElementById("schnitzelButton").style.display = "inline"; // Show the "Schnitzel" button
+  }
+}
+</script>
+
+<div id="container">
+  <button onclick="createList()">Tisch</button>
+  <button id="schnitzelButton" onclick="addWordToList('Schnitzel')" style="display: none;">Schnitzel</button>
+</div>
+
+</body>
+</html>
